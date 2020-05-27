@@ -1,1 +1,1 @@
-# Internship-TechHub
+# Internship-TechHub-Student attendance management system
