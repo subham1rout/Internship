@@ -11,7 +11,9 @@
         }
         else{
             $url='bsection.php?branch='.$branch;
-            header('location: '.$url);
+            // session_start();
+            // $_SESSION['branch']='true';
+            header('location: '.$url);     
             exit();
         }
     }
@@ -29,7 +31,9 @@
 </head>
 <body>
     <?php
+        // $_SESSION['branch']='false';
         include('config/header.php');
+        
         if(!isset($_GET['signup'])){
             // exit();
         }
