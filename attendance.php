@@ -3,40 +3,42 @@
     if(!$_SESSION['auth']){
         header('location:index.php');
     }
-    $data=1;
+    $b=false;
+    $a=1;
     include('config/database.php');
     if(isset($_POST['submit'])){
         $att=$_POST['attendance'];
-        $date=date('d-m-y');
-        // echo $date;
+        $date= $_POST['date'];
 
-        $query="SELECT distinct date from attendance";
-        $result=$conn->query($query);
-        // echo print_r($result);
-        $b=false;
+        $query="SELECT date from attendance";
+        $result=mysqli_query($conn, $query);
+        
         if($result->num_rows > 0){
             while($check= $result-> fetch_assoc()){
-                // echo print_r($check);
                 if($date === $check['date']){
                     $b=true;
-                    $data=0;
-                    // echo "<div class='alert alert-danger'>Attendance already taken today!!!</div>";
+                    $a=2;
+                }else if($date > date('Y-m-d')){
+                    $b=true;
+                    $a=3;
+                }elseif($date < date('Y-m-d')){
+                    $b=true;
+                    $a=4;
                 }
             }
         }
         if(!$b){
             foreach($att as $key => $value){
                 if($value=="Present"){
-                    $query="INSERT into attendance(date,status,student_id) values('$date','Present','$key')";
+                    $query="INSERT into attendance(date,status,student_id) values('$date','P','$key')";
                     $insertResult=$conn->query($query);
                 }
                 else{
-                    $query="INSERT into attendance(date,status,student_id) values('$date','Absent','$key')";
+                    $query="INSERT into attendance(date,status,student_id) values('$date','A','$key')";
                     $insertResult=$conn->query($query);
                 }
             }
             if($insertResult){
-                // $data=2;
                 header('location:bsection.php?insert=success');
                 // echo "<div class='alert alert-danger'>Attendance successfully taken!!!</div>";
             }
@@ -55,8 +57,12 @@
 </head>
 <body>
     <?php include('config/header.php'); ?>
-    <?php if($data==0){
+    <?php if($a==2){
             echo "<div class='alert alert-danger'>Attendance already taken today!!!</div>";
+        }elseif($a==3){
+            echo "<div class='alert alert-danger'>You can not take attendance of future!!!</div>";
+        }elseif($a==4){
+            echo "<div class='alert alert-danger'>You can not edit attendance of past!!!</div>";
         }
     ?>
     <div class="container">

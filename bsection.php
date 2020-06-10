@@ -40,14 +40,15 @@
         <div class="mt-3">
             <a href="student.php" class="btn-sm btn-success">Add Student</a>
             <a href="attendance.php" class="btn-sm btn-success pull-right">Take Attendance</a>
+            <a href="atnd_view.php" class="btn-sm btn-success">View Attendance</a>
         </div>
     </div>
     <div class="container">
-        <h5 class="my-3 font-italic text-center" style="letter-spacing: 0.2rem;word-spacing: 0.3rem;text-transform:uppercase;">
-            All students of 
+        <h5 class="my-4 font-italic text-center" style="letter-spacing: 0.2rem;word-spacing: 0.3rem;text-transform:uppercase;">
+            Students of 
             <?php 
                 if(!isset($_GET['branch'])){
-                    echo 'Any';
+                    echo 'All';
                 }else{
                     $branch=$_GET['branch'];
                     echo $branch;
